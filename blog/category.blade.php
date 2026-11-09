@@ -2,8 +2,7 @@
 
 @php
     $currentLocale = app()->getLocale();
-    $catTrans = $category->translations->where('locale', $currentLocale)->first()
-        ?? $category->translations->first();
+    $catTrans = public_translation($category, $currentLocale, $currentMarket ?? null);
     $catFallbackName = match($currentLocale) {
         'ca' => 'Categoria',
         'en' => 'Category',
@@ -52,8 +51,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         @forelse($posts as $post)
             @php
-                $trans = $post->translations->where('locale', app()->getLocale())->first()
-                    ?? $post->translations->first();
+                $trans = public_translation($post);
                 $localization = app(\DbCms\Core\Contracts\Services\LocalizationServiceInterface::class);
                 $postUrl = $localization->url('/blog/' . ($trans?->slug ?? ''), $currentMarket);
             @endphp
@@ -75,7 +73,7 @@
 
                         <div class="p-6 space-y-3">
                             <div class="text-[11px] text-slate-500 uppercase tracking-wider flex items-center gap-2">
-                                <span>{{ $post->published_at ? $post->published_at->format('d M, Y') : now()->format('d M, Y') }}</span>
+                                <span>{{ ($post->published_at ?? now())->copy()->locale(app()->getLocale())->isoFormat('LL') }}</span>
                                 <span>&bull;</span>
                                 <span>{{ $post->author->name ?? 'Equipo Sunset' }}</span>
                             </div>

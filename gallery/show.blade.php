@@ -23,7 +23,7 @@
             </p>
         @endif
         <div class="flex items-center gap-4 text-xs text-slate-500 pt-1">
-            <span><i class="fa-solid fa-calendar mr-1"></i> {{ $gallery->created_at->format('d M, Y') }}</span>
+            <span><i class="fa-solid fa-calendar mr-1"></i> {{ $gallery->created_at->copy()->locale(app()->getLocale())->isoFormat('LL') }}</span>
             <span>&bull;</span>
             <span><i class="fa-solid fa-camera mr-1"></i> {{ $items->count() }} elementos</span>
         </div>

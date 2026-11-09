@@ -1,4 +1,4 @@
-@extends('theme-db-sunset::layouts.app')
+@extends($layout ?? 'theme-db-sunset::layouts.app')
 
 @section('title', $translation->meta_title ?? $translation->title ?? __('Página'))
 @section('meta_description', $translation->meta_description ?? '')

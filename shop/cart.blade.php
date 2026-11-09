@@ -124,7 +124,7 @@
                         @foreach($items as $item)
                             @php
                                 $p = $item['product'];
-                                $trans = $p->translations->where('locale', $currentLocale)->first();
+                                $trans = public_translation($p, $currentLocale, $currentMarket ?? null);
                             @endphp
                             <tr class="hover:bg-white/5">
                                 <td class="p-4">

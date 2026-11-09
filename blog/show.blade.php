@@ -1,8 +1,7 @@
 @extends('theme-db-sunset::layouts.app')
 
 @php
-    $trans = $post->translations->where('locale', app()->getLocale())->first()
-        ?? $post->translations->first();
+    $trans = public_translation($post);
     $marketCode = $currentMarket?->code ?? 'es';
     $markdownRenderer = app(\DbCms\Core\Services\Media\MarkdownRendererService::class);
     $renderedBody = $trans ? $markdownRenderer->render($trans->content) : '';
@@ -21,10 +20,10 @@
     <header class="space-y-6 border-b border-white/10 pb-10">
         <div class="flex items-center gap-3 text-xs font-semibold text-rose-400">
             <span class="px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/30">
-                {{ $post->category?->translations->first()?->name ?? 'Tendencias' }}
+                {{ public_translation($post->category)?->name ?? 'Tendencias' }}
             </span>
             <span>&bull;</span>
-            <span class="text-slate-400">{{ $post->published_at ? $post->published_at->format('d \d\e F, Y') : now()->format('d \d\e F, Y') }}</span>
+            <span class="text-slate-400">{{ ($post->published_at ?? now())->copy()->locale(app()->getLocale())->isoFormat('LL') }}</span>
             <span>&bull;</span>
             <span class="text-slate-400"><i class="fa-solid fa-clock mr-1"></i> {{ $post->reading_time_minutes }} min de lectura</span>
         </div>
